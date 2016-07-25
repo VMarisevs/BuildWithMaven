@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<context:property-placeholder location="./myApp.properties"/>
+
+<!-- 
+	<bean id="mealAutowired" class="fooddemo.Meal" autowire="byType" />
+ -->	
+	
+	<bean id="mealOuterBean" class="fooddemo.Meal">
+		<property name="fruit">
+			<bean id="appleInnerBean" class="fooddemo.Apple">
+				<property name="name" value="apple" />
+				<property name="description" value="I am an apple. I am typically red or green with crip.." />
+			</bean>
+		</property>
+	</bean>
+	
+
+	<bean id="veg" class="fooddemo.Vegetable"/>
+ 	<bean id="mealAutowiredByName" class="fooddemo.Meal" autowire="byName" />
+ 
+ 
+ 	<bean id="autowiredByConstructor" class="fooddemo.Meal" autowire="constructor" />
+ 
+	<bean id="externalVeg" class="fooddemo.Vegetable">
+		<property name="definition" value="${def-veg}" />
+	</bean>
+ 
+    <bean id="fruit" class="fooddemo.Fruit"/>
+    <bean id="vegetable" class="fooddemo.Vegetable"/>
+	<bean id="dairy" class="fooddemo.Dairy"/>    
+	<bean id="meat" class="fooddemo.Meat"/>    
+	<bean id="grain" class="fooddemo.Grain"/>  
+	
+	<bean id="mealWithRefs"  class="fooddemo.Meal">
+		<constructor-arg index="0" ref="fruit" />
+		<constructor-arg name="dairy" ref="dairy"/>
+		<constructor-arg name="meat" ref="meat" />
+		<constructor-arg name="grain" ref="grain" />
+		<constructor-arg name="veg" ref="vegetable" />
+	</bean>
+	
+	<bean id="meal" class="fooddemo.Meal">
+		<property name="fruit" ref="fruit" />
+		<property name="veg" ref="vegetable"/>
+		<property name="dairy" ref="dairy" />
+		<property name="meat" ref="meat" />
+		<property name="grain" ref="grain" />
+	</bean>  
+    
+
+	<bean id="fruitWithName" class="fooddemo.Fruit">
+		<constructor-arg index="0" value="Apple" />
+	</bean>
+ 	
+
+	
+	<bean id="vegWithPNamespace" class="fooddemo.Vegetable" p:myName="Squash"/>
+	
+	<bean id="vegWithName" class="fooddemo.Vegetable">
+		<property name="myName" value="Brocolli" />
+	</bean>
+	
+
+	<bean id="fruitWithListAndMap" class="fooddemo.Fruit" scope="prototype" init-method="initMethod" destroy-method="destroyMethod">
+		<property name="fruitNameList">
+			<list>
+				<value>apple</value>
+				<value>banana</value>
+				<value>orange</value>
+			</list>
+		</property>
+		
+		<property name="fruitNameMap">
+			<map>
+				<entry key="apple" value="red" />
+				<entry key="banana" value="yellow" />
+				<entry key="orange" value="orange" />
+			</map>
+		</property>
+	</bean>
+ 
+</beans>
